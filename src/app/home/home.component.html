@@ -1,0 +1,49 @@
+<div class="back">
+  <header>
+    <div class="title-1">
+      <h1>Vigenère</h1>
+    </div>
+    <div class="title-2">
+      <a href="https://github.com/VictorMuniz7" target="_blank"><i class="fa-brands fa-github"></i></a>
+      <h1>Cipher</h1>
+      <a href="https://www.linkedin.com/in/victor-muniz-236842267/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <h2>{{selectedOption}}</h2>
+
+    <div class="inputs-div">
+      <textarea spellcheck="false"(input)="encryptOrDecrypt()"
+      [(ngModel)]="messageToEncryptOrDecrypt" [placeholder]="selectedOption === 'encrypt' ? encryptPlaceholder : decryptPlaceholder"></textarea>
+      <div class="key-div">
+        <label>Secret key </label>
+        <input type="text" spellcheck="false" value="Anaconda" (input)="encryptOrDecrypt()"  [(ngModel)]="secretKey" >
+      </div>
+      <div class="error-div" *ngIf="error">
+        <p style="color: red">Secret key needed</p>
+      </div>
+    </div>
+
+    <div class="action-div">
+
+      <div>
+        <input type="radio" name="option" value="encrypt" id="encrypt" [(ngModel)]="selectedOption" (change)="encryptOrDecrypt()"/>
+        <label for="encrypt"><span></span>Encrypt</label>
+      </div>
+
+      <div>
+        <input type="radio" name="option" value="decrypt" id="decrypt" [(ngModel)]="selectedOption" (change)="encryptOrDecrypt()"/>
+        <label for="decrypt"><span></span>Decrypt</label>
+      </div>
+
+    </div>
+
+    <h4>Your {{selectedOption}}ed message</h4>
+    <div class="result-div">
+      <button (click)="copyMessage(result, icon)"><i class="fa-solid fa-copy" #icon></i></button>
+      <textarea readonly #result>{{encryptedOrDecryptedMessage}}</textarea>
+    </div>
+  </div>
+</div>
