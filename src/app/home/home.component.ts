@@ -12,7 +12,7 @@ export class HomeComponent {
   secretKey: string = 'Hope';
   encryptedOrDecryptedMessage: string = '';
 
-  encryptPlaceholder: string = 'This will be your secret message, to be able to decode the text you will need a secret key that can be inserted below.';
+  encryptPlaceholder: string = 'This will be your secret message, to be able to decode the text you will need a secret key that can be inserted below, numbers do not work.';
   decryptPlaceholder: string = 'Insert the encrypted message and the secret key to decode it.';
 
   error: boolean = false;
@@ -65,17 +65,16 @@ export class HomeComponent {
     let encryptString: string = '';
     let keyIndex: number = 0;
 
-
     if (this.secretKey != '') {
       this.error = false;
       for (let i = 0; i < message.length; i++) {
         if (keyIndex >= key.length) {
           keyIndex = 0;
         }
-        let messageValue = this.alphabetMap.get(message[i].toUpperCase());
-        let keyValue = this.alphabetMap.get(key[keyIndex].toUpperCase());
+        let messageValue = this.alphabetMap.get(message[i].toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ""));
+        let keyValue = this.alphabetMap.get(key[keyIndex].toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ""));
         if (messageValue !== undefined && keyValue !== undefined)
-          encryptValue = messageValue + keyValue;
+        encryptValue = messageValue + keyValue;
         if (encryptValue > 25) {
           encryptValue -= 26;
         }
@@ -106,9 +105,11 @@ export class HomeComponent {
         let messageValue = this.alphabetMap.get(encryptedMessage[i].toUpperCase());
         let keyValue = this.alphabetMap.get(key[keyIndex].toUpperCase());
         if (messageValue !== undefined && keyValue !== undefined)
-          decryptValue = messageValue - keyValue;
+          decryptValue = keyValue - messageValue;
         if (decryptValue < 0) {
           decryptValue *= -1;
+        }else if(decryptValue > 0){
+          decryptValue = 26 - decryptValue;
         }
         decryptString += this.alphabetMap.getKey(decryptValue);
         keyIndex++;

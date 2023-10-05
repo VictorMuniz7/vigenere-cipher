@@ -15,7 +15,7 @@
     <h2>{{selectedOption}}</h2>
 
     <div class="inputs-div">
-      <textarea spellcheck="false"(input)="encryptOrDecrypt()"
+      <textarea spellcheck="false" (input)="encryptOrDecrypt()"
       [(ngModel)]="messageToEncryptOrDecrypt" [placeholder]="selectedOption === 'encrypt' ? encryptPlaceholder : decryptPlaceholder"></textarea>
       <div class="key-div">
         <label>Secret key </label>
